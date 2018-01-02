@@ -90,6 +90,11 @@ _camera.AddCommandBuffer(CameraEvent.AfterImageEffects, buffer);
 
 ## Release Notes
 
+### ver.0.2.0:
+
+* Fixed: When `UNITY_UV_STARTS_AT_TOP` is defined (=Direct3D-like platforms), the blurred image is flipped vertically.  
+https://docs.unity3d.com/Manual/SL-PlatformDifferences.html
+
 ### ver.0.1.0:
 
 * Feature: Non-Realtime Screen Blur
