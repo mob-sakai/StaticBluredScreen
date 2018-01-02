@@ -15,13 +15,27 @@ Shader "Hidden/StaticBlur"
 			Fog { Mode off }
 
 			CGPROGRAM
-			#pragma vertex vert_img
+			#pragma vertex vert
 			#pragma fragment frag
 			#pragma target 2.0
 
 			#include "UnityCG.cginc"
 			
 			sampler2D _MainTex;
+
+			v2f_img vert(appdata_img v)
+			{
+				v2f_img o;
+				o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+
+				#if UNITY_UV_STARTS_AT_TOP
+				o.uv = half2(v.texcoord.x, 1 - v.texcoord.y);
+				#else
+				o.uv = v.texcoord;
+				#endif
+
+				return o;
+			}
 
 			// 8方向ブラー.
 			fixed4 _blur8(sampler2D tex, half2 uv, half addUv)
