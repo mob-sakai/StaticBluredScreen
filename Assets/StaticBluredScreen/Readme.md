@@ -1,7 +1,7 @@
 StaticBluredScreen
 ===
 
-NOTE: This project is merged to [UIEffect](https://github.com/mob-sakai/UIEffect).
+NOTE: This project has been merged to [UIEffect](https://github.com/mob-sakai/UIEffect).
 
 <br>
 <br>
