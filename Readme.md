@@ -1,1 +1,0 @@
-./Assets/StaticBluredScreen/Readme.md
