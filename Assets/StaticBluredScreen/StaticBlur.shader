@@ -2,68 +2,108 @@ Shader "Hidden/StaticBlur"
 {
 	Properties
 	{
-		_MainTex ("Base (RGB)", 2D) = "white" {}
+		[PerRendererData] _MainTex("Main Texture", 2D) = "white" {}
 	}
-	
-	Subshader
+
+	SubShader
 	{
+		ZTest Always
+		Cull Off
+		ZWrite Off
+		Fog{ Mode off }
+
 		Pass
 		{
-			ZTest Always
-			Cull Off
-			ZWrite Off
-			Fog { Mode off }
+			Name "Default"
 
-			CGPROGRAM
+		CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
 			#pragma target 2.0
 
+			#pragma shader_feature __ UI_BLUR_FAST UI_BLUR_MEDIUM UI_BLUR_DETAIL
+			
 			#include "UnityCG.cginc"
-			
+
+			struct v2f
+			{
+				float4 vertex   : SV_POSITION;
+				float2 texcoord  : TEXCOORD0;
+				half4 effectFactor : TEXCOORD1;
+			};
+
 			sampler2D _MainTex;
+			float4 _MainTex_TexelSize;
+			half4 _EffectFactor;
 
-			v2f_img vert(appdata_img v)
+
+			// Calculate blur effect.
+			// Sample texture by blured uv, with bias.
+			fixed4 Blur(sampler2D tex, half2 uv, half2 addUv, half bias)
 			{
-				v2f_img o;
-				o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+				return 
+					(
+					tex2D(tex, uv + half2(addUv.x, addUv.y))
+					+ tex2D(tex, uv + half2(-addUv.x, addUv.y))
+					+ tex2D(tex, uv + half2(addUv.x, -addUv.y))
+					+ tex2D(tex, uv + half2(-addUv.x, -addUv.y))
+			#if UI_BLUR_DETAIL
+					+ tex2D(tex, uv + half2(addUv.x, 0))
+					+ tex2D(tex, uv + half2(-addUv.x, 0))
+					+ tex2D(tex, uv + half2(0, addUv.y))
+					+ tex2D(tex, uv + half2(0, -addUv.y))
+					)
+					* bias / 2;
+			#else
+					)
+					* bias;
+			#endif
+			}
 
-				#if UNITY_UV_STARTS_AT_TOP
-				o.uv = half2(v.texcoord.x, 1 - v.texcoord.y);
+			// Sample texture with blurring.
+			// * Fast: Sample texture with 3x4 blurring.
+			// * Medium: Sample texture with 6x4 blurring.
+			// * Detail: Sample texture with 6x8 blurring.
+			fixed4 Tex2DBlurring(sampler2D tex, half2 uv, half2 blur)
+			{
+				half4 color = tex2D(tex, uv);
+
+				#if UI_BLUR_FAST
+				return color * 0.41511
+					+ Blur( tex, uv, blur * 3, 0.12924 )
+					+ Blur( tex, uv, blur * 5, 0.01343 )
+					+ Blur( tex, uv, blur * 6, 0.00353 );
+
+				#elif UI_BLUR_MEDIUM | UI_BLUR_DETAIL
+				return color * 0.14387
+					+ Blur( tex, uv, blur * 1, 0.06781 )
+					+ Blur( tex, uv, blur * 2, 0.05791 )
+					+ Blur( tex, uv, blur * 3, 0.04360 )
+					+ Blur( tex, uv, blur * 4, 0.02773 )
+					+ Blur( tex, uv, blur * 5, 0.01343 )
+					+ Blur( tex, uv, blur * 6, 0.00353 );
 				#else
-				o.uv = v.texcoord;
+				return color;
 				#endif
-
-				return o;
 			}
 
-			// 8方向ブラー.
-			fixed4 _blur8(sampler2D tex, half2 uv, half addUv)
+			v2f vert(appdata_img v)
 			{
-				return (
-						tex2D( tex, uv + half2(addUv, 0))
-						+ tex2D( tex, uv + half2(-addUv, 0))
-						+ tex2D( tex, uv + half2(0, addUv))
-						+ tex2D( tex, uv + half2(0, -addUv))
-						+ tex2D( tex, uv + half2(addUv, addUv))
-						+ tex2D( tex, uv + half2(addUv, -addUv))
-						+ tex2D( tex, uv + half2(-addUv, addUv))
-						+ tex2D( tex, uv + half2(-addUv, -addUv))
-					)/8;
+				v2f OUT;
+				OUT.vertex = UnityObjectToClipPos(v.vertex);
+				OUT.texcoord = v.texcoord;
+				OUT.effectFactor = _EffectFactor;
+				
+				return OUT;
 			}
-			
-			fixed4 frag (v2f_img i) : COLOR {
-				fixed4 color = tex2D(_MainTex, i.uv) * 0.14387
-					+ _blur8( _MainTex, i.uv, 0.005 * 1) * 0.27124
-					+ _blur8( _MainTex, i.uv, 0.005 * 2) * 0.23164
-					+ _blur8( _MainTex, i.uv, 0.005 * 3) * 0.17440
-					+ _blur8( _MainTex, i.uv, 0.005 * 4) * 0.11092
-					+ _blur8( _MainTex, i.uv, 0.005 * 5) * 0.06784;
+
+			fixed4 frag(v2f IN) : SV_Target
+			{
+				half4 color = Tex2DBlurring(_MainTex, IN.texcoord, _EffectFactor.z * _MainTex_TexelSize.xy * 2);
 				color.a = 1;
 				return color;
 			}
-			ENDCG
+		ENDCG
 		}
 	}
-	Fallback off
 }

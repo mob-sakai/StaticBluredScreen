@@ -897,7 +897,15 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
-  m_Shader: {fileID: 4800000, guid: c7bb8dee750384818a922a942cd437f9, type: 3}
+  m_Blur: 1
+  m_BlurMode: 3
+  m_DesamplingRate: 1
+  m_ReductionRate: 1
+  m_FilterMode: 1
+  m_EffectMaterial: {fileID: 21807421563859802, guid: bfc07c11f98194f59b81443af0968a5f,
+    type: 2}
+  m_Iterations: 3
+  m_KeepCanvasSize: 1
 --- !u!222 &602972759
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1453,7 +1461,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000015258789, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1268722441
@@ -2363,7 +2371,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1848250909
+  randomSeed: 430800314
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -5019,7 +5027,15 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
-  m_Shader: {fileID: 4800000, guid: c7bb8dee750384818a922a942cd437f9, type: 3}
+  m_Blur: 1
+  m_BlurMode: 3
+  m_DesamplingRate: 1
+  m_ReductionRate: 1
+  m_FilterMode: 1
+  m_EffectMaterial: {fileID: 21807421563859802, guid: bfc07c11f98194f59b81443af0968a5f,
+    type: 2}
+  m_Iterations: 3
+  m_KeepCanvasSize: 1
 --- !u!222 &1869998896
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5239,7 +5255,15 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
-  m_Shader: {fileID: 4800000, guid: c7bb8dee750384818a922a942cd437f9, type: 3}
+  m_Blur: 1
+  m_BlurMode: 3
+  m_DesamplingRate: 1
+  m_ReductionRate: 2
+  m_FilterMode: 1
+  m_EffectMaterial: {fileID: 21807421563859802, guid: bfc07c11f98194f59b81443af0968a5f,
+    type: 2}
+  m_Iterations: 3
+  m_KeepCanvasSize: 1
 --- !u!222 &2009106049
 CanvasRenderer:
   m_ObjectHideFlags: 0
