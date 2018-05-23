@@ -1,0 +1,10 @@
+{
+  "name": "StaticBluredScreen",
+  "version": "0.2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mob-sakai/StaticBluredScreen.git"
+  },
+  "src": "Assets/StaticBluredScreen",
+  "license": "MIT"
+}
