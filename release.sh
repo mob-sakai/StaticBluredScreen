@@ -49,13 +49,6 @@ read -p "[? is the change log correct? (y/N):" yn
 case "$yn" in [yY]*) ;; *) exit ;; esac
 
 
-# export unitypackage
-PACKAGE_SRC=`node -pe 'require("./package.json").src'`
-echo -e "\n>> Export unitypackage... ${PACKAGE_SRC}"
-"$UNITY_EDITOR" -quit -batchmode -projectPath "`pwd`" -exportpackage "$PACKAGE_SRC" "$PACKAGE_NAME.unitypackage"
-echo -e ">> OK"
-
-
 # commit release files
 echo -e "\n>> Commit release files..."
 git add CHANGELOG.md -f
@@ -72,6 +65,13 @@ git push origin master
 git checkout develop
 git merge --ff master
 git push origin develop
+
+
+# export unitypackage
+PACKAGE_SRC=`node -pe 'require("./package.json").src'`
+echo -e "\n>> Export unitypackage... ${PACKAGE_SRC}"
+"$UNITY_EDITOR" -quit -batchmode -projectPath "`pwd`" -exportpackage "$PACKAGE_SRC" "$PACKAGE_NAME.unitypackage"
+echo -e ">> OK"
 
 
 # upload unitypackage and release on Github
