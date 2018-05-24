@@ -3,6 +3,16 @@ StaticBluredScreen
 
 NOTE: This project has been merged to [UIEffect](https://github.com/mob-sakai/UIEffect).
 
+[![](https://img.shields.io/github/release/mob-sakai/StaticBluredScreen.svg?label=latest%20version)](https://github.com/mob-sakai/StaticBluredScreen/releases)
+[![](https://img.shields.io/github/release-date/mob-sakai/StaticBluredScreen.svg)](https://github.com/mob-sakai/StaticBluredScreen/releases)  
+![](https://img.shields.io/badge/requirement-Unity%205.5%2B-green.svg)
+[![](https://img.shields.io/github/license/mob-sakai/StaticBluredScreen.svg)](https://github.com/mob-sakai/StaticBluredScreen/blob/master/LICENSE.txt)  
+[![](https://img.shields.io/github/last-commit/mob-sakai/StaticBluredScreen/develop.svg?label=last%20commit%20to%20develop)](https://github.com/mob-sakai/StaticBluredScreen/commits/develop)
+[![](https://img.shields.io/github/issues/mob-sakai/StaticBluredScreen.svg)](https://github.com/mob-sakai/StaticBluredScreen/issues)
+
+
+<< [Description](#Description) | [WebGL Demo](#demo) | [Download](https://github.com/mob-sakai/StaticBluredScreen/releases) | [Usage](#usage) | [Change log](https://github.com/mob-sakai/StaticBluredScreen/blob/develop/CHANGELOG.md) >>
+
 <br>
 <br>
 <br>
@@ -94,21 +104,6 @@ _camera.AddCommandBuffer(CameraEvent.AfterImageEffects, buffer);
 ダイアログを開くタイミングで静的なスクリーンブラーを生成し、アニメーションでフェードイン/アウトするデモです.  
 シーン内にカメラは1つしかありません.  
 ダイアログが2つ重なったとき、更にブラーを生成しています.
-
-
-
-## Release Notes
-
-### ver.0.2.0:
-
-* Fixed: When `UNITY_UV_STARTS_AT_TOP` is defined (=Direct3D-like platforms), the blurred image is flipped vertically.  
-https://docs.unity3d.com/Manual/SL-PlatformDifferences.html
-
-### ver.0.1.0:
-
-* Feature: Non-Realtime Screen Blur
-* Feature: Supports uGUI.
-* Feature: Blur with reduction buffer to improve performance.
 
 
 
