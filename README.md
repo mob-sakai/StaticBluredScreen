@@ -94,6 +94,8 @@ _camera.AddCommandBuffer(CameraEvent.AfterImageEffects, buffer);
 1. In playmode, call `StaticBluredScreen.UpdateTexture`.
 1. Enjoy!
 
+![image](https://user-images.githubusercontent.com/12690315/40522542-6fc60e1a-600c-11e8-8b22-9a41f21e8657.png)
+
 
 
 
