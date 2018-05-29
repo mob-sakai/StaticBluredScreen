@@ -131,22 +131,7 @@ public class StaticBluredScreen : RawImage
 		// When not displaying, clear vertex.
 		if (texture == null || color.a < 1 / 255f || canvasRenderer.GetAlpha() < 1 / 255f)
 			vh.Clear();
-#if UNITY_STANDALONE_WIN
-            else if(_capturedIterations % 2 == 0)
-            {
-                base.OnPopulateMesh(vh);
-                int count = vh.currentVertCount;
-                UIVertex vt = UIVertex.simpleVert;
-                Vector2 one = Vector2.one;
-                for (int i = 0; i < count; i++)
-                {
-                    vh.PopulateUIVertex(ref vt, i);
-                    vt.uv0 = new Vector2(vt.uv0.x, 1-vt.uv0.y);
-                    vh.SetUIVertex(vt, i);
-                }
-            }
-#endif
-			else
+		else
 			base.OnPopulateMesh(vh);
 	}
 
@@ -315,7 +300,7 @@ public class StaticBluredScreen : RawImage
 			_buffer.Blit(BuiltinRenderTextureType.CurrentActive, s_CopyId);
 
 			// Set properties.
-			_buffer.SetGlobalVector("_EffectFactor", new Vector4(0, 0, blur, 0));
+			_buffer.SetGlobalVector("_EffectFactor", new Vector4(0, 0, blur, 1));
 
 			// Blit without effect.
 			if (!mat)
@@ -333,6 +318,7 @@ public class StaticBluredScreen : RawImage
 				_buffer.ReleaseTemporaryRT(s_CopyId);
 					
 				// Iterate the operation.
+				_buffer.SetGlobalVector("_EffectFactor", new Vector4(0, 0, blur, 0));
 				if (1 < m_Iterations)
 				{
 					_buffer.GetTemporaryRT(s_EffectId2, w, h, 0, m_FilterMode);

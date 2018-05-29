@@ -94,6 +94,10 @@ Shader "Hidden/StaticBlur"
 				OUT.texcoord = v.texcoord;
 				OUT.effectFactor = _EffectFactor;
 				
+				#if UNITY_UV_STARTS_AT_TOP
+				OUT.texcoord.y = lerp(OUT.texcoord.y, 1 - OUT.texcoord.y, OUT.effectFactor.w);
+				#endif
+
 				return OUT;
 			}
 
